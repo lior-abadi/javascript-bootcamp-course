@@ -19,4 +19,9 @@ function isValid(password, username) {
     return true;
 }
 
-console.log(isValid("moristeEnMadrid", "JuanFernandoQuintero"));
+console.log(isValid("", "JuanFernandoQuintero")); // false
+console.log(isValid("JuanFernandoQuintero", "")); // false
+console.log(isValid("juanfer", "JuanFernandoQuintero")); // false
+console.log(isValid("Juan Fernando Quintero", "JuanFernandoQuintero")); // false
+console.log(isValid("JuanFernandoQuintero", "JuanFernandoQuintero")); // false
+console.log(isValid("moristeEnMadrid", "JuanFernandoQuintero")); // true
