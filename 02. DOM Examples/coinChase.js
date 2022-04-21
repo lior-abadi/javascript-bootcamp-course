@@ -1,44 +1,60 @@
-function isTouching(a, b) {
-	const aRect = a.getBoundingClientRect();
-	const bRect = b.getBoundingClientRect();
-
-	return !(
-		aRect.top + aRect.height < bRect.top ||
-		aRect.top > bRect.top + bRect.height ||
-		aRect.left + aRect.width < bRect.left ||
-		aRect.left > bRect.left + bRect.width
-	);
-}
-
-
 const player = document.querySelector("#player")
+const coin = document.querySelector("#coin")
+const scoreChart = document.querySelector('h1')
+let score = 0;
 
-window.addEventListener("keyup", function(e) {
-    console.log(e.key)
-
+window.addEventListener("keydown", function(e) {
     if (e.key === "ArrowDown" || e.key === "Down"){
-        const curTop = getPos(player.style.top)
-        player.style.top = `${curTop+50}px`
+        movement(player, 50, 'y');
     }
 
     if (e.key === "ArrowUp" || e.key === "Up"){
-        const curDown = getPos(player.style.top)
-        player.style.top = `${curDown-50}px`
+        movement(player, -50, 'y');
     }
 
     if (e.key === "ArrowRight" || e.key === "Right"){
-        const curLeft = getPos(player.style.left)
-        player.style.left = `${curLeft+50}px`
+        movement(player, 50, 'x');
     }
 
     if (e.key === "ArrowLeft" || e.key === "Left"){
-        const curRight = getPos(player.style.left)
-        player.style.left = `${curRight-50}px`
+        movement(player, -50, 'x');
     }
 
+    const playerPos = [getPos(player.style.top), getPos(player.style.left)]
+    const coinPos   = [getPos(coin.style.top), getPos(coin.style.left)]
+
+    let yMatch = (Math.abs(playerPos[0] - coinPos[0])) < 51
+    let xMatch = (Math.abs(playerPos[1] - coinPos[1])) < 51
+    
+    if(yMatch && xMatch){
+        moveCoin();
+        score += 1;
+        scoreChart.innerText = `Current Score: ${score}`;
+    }
 })
+
+const movement = (element, amount, axis) => {
+    if (axis === 'x'){
+        const curLeft = getPos(element.style.left)
+        element.style.transform = 'scale(1,1)'
+        element.style.left = `${curLeft+amount}px`
+    }
+
+    if (axis === 'y'){
+        const curTop = getPos(element.style.top)
+        element.style.top = `${curTop+amount}px`
+    }
+}
 
 const getPos = (pos) => {
     if (!pos) return 100;
     return parseInt(pos.slice(0, -2))
 }
+
+const moveCoin = () => {
+    const y = Math.floor(Math.random() * window.innerHeight)
+    const x = Math.floor(Math.random() * window.innerWidth)
+    coin.style.top = `${y}px`
+    coin.style.left = `${x}px`
+}
+moveCoin();
