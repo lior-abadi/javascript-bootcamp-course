@@ -1,42 +1,29 @@
 // The program will display a timer.
 // Its border will be revoluting (dissappearing) synchronously with the remaining time.
-
-class Timer{
-    constructor(durationInput, startButton, pauseButton){
-        this.durationInput = durationInput;
-        this.startButton = startButton;
-        this.pauseButton = pauseButton;    
-
-        this.startButton.addEventListener("click", this.start);
-        this.pauseButton.addEventListener("click", this.pause);
-    }
-
-    // Arrow functions are used in order to allow the class to call inner functions.
-    start = () => {
-        this.tick();
-        this.interval = setInterval(this.tick, 1000);
-    }
-  
-    pause = () => { 
-        clearInterval(this.interval);
-    }
-
-    tick = () => {
-        if (this.durationInput.value > 0) {
-            this.durationInput.value -= 1;
-        } else {
-            clearInterval(this.interval);
-            this.durationInput.type = "string";
-            this.durationInput.value = "Ding!";
-        }
-        
-    }; 
-
-}
-
 const durationInput = document.querySelector("#duration");
 const startButton = document.querySelector("#start");
 const pauseButton = document.querySelector("#pause");
+const circleTimer = document.querySelector("#circle-timer");
 
-const timer = new Timer(durationInput, startButton, pauseButton);
+const perimeter = circleTimer.getAttribute("r") * 2 * Math.PI;
+circleTimer.setAttribute("stroke-dasharray", perimeter);
+
+let duration;
+let fraction;
+const timer = new Timer(durationInput, startButton, pauseButton, {
+    onStart(totalDuration) {
+        duration = totalDuration;
+        console.log("Timer Started");
+        
+    },
+    onTick(timeRemaining) {
+        fraction = perimeter * timeRemaining / duration - perimeter;
+        circleTimer.setAttribute("stroke-dashoffset", fraction);
+    },
+    onComplete() {
+        circleTimer.setAttribute("stroke-dashoffset", 0);
+        console.log("Completed!");
+    }
+});
+
 
