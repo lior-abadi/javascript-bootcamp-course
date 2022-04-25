@@ -12,15 +12,6 @@ const fetchData = async (movie) => {
         return []
     }
     return baseResponse.data.Search
-    
-    // const movieId = baseResponse.data.Search[0]["imdbID"]
-    // const idResponse = await axios.get("http://www.omdbapi.com/", {
-    //     params: {
-    //         apiKey: "a7490284",
-    //         i: `${movieId}`
-    //     }
-    // }); 
-    // return (idResponse.data)
 }
 
 const fetchMovie = async (movie) => {
@@ -53,8 +44,7 @@ const dropwdown = document.querySelector(".dropdown");
 const resultsWrapper = document.querySelector(".results");
 
 let movieData;
-const onInput = async event => {
-    
+const onInput = async event => {  
     const movies = await fetchData(event.target.value);
     
     if(!movies.length){
@@ -65,7 +55,6 @@ const onInput = async event => {
     dropwdown.classList.add("is-active")
     for (let movie of movies){
         const option = document.createElement("a");
-
         const imgSRC = movie.Poster === "N/A" ? "" : movie.Poster;
 
         option.classList.add("dropdown-item");
@@ -77,12 +66,9 @@ const onInput = async event => {
         onMovieSelected(option, movie);
         resultsWrapper.appendChild(option);
     }
-
-    
 };
 
 input.addEventListener("input", debounce(onInput, 500));
-
 
 document.addEventListener("click", event => {
     if(!root.contains(event.target)){
