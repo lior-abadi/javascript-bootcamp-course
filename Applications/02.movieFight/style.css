@@ -47,6 +47,19 @@ figure .image img {
   margin-right: 10px;
 }
 
-.autocomplete {
-  width: 350px;
+.container {
+  margin-left: 2rem;
 }
+
+.dropwdown {
+  display: block;
+}
+
+.is-active{
+  display: block;
+}
+
+.media {
+  margin-top: 1.2rem;
+}
+
